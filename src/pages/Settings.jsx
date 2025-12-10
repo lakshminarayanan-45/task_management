@@ -2,10 +2,12 @@ import React, { useState, useRef } from "react";
 import { User, Mail, Phone, Building, Save, Upload, X, Edit2 } from "lucide-react";
 import { useApp } from "../context/AppContext";
 import { toast } from "sonner";
+import { validateString, validateEmail, validatePhone, validateDepartment } from "../utils/validation";
 
 export default function Settings() {
   const { currentUser, updateUser, theme, toggleTheme } = useApp();
   const [isEditing, setIsEditing] = useState(false);
+  const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     name: currentUser?.name || "",
     email: currentUser?.email || "",
@@ -15,12 +17,48 @@ export default function Settings() {
   const [selectedFile, setSelectedFile] = useState(null);
   const fileInputRef = useRef(null);
 
+  const validateForm = () => {
+    const newErrors = {};
+    
+    const nameValidation = validateString(formData.name, "Full Name", 2, 50);
+    if (!nameValidation.valid) {
+      newErrors.name = nameValidation.error;
+    }
+    
+    const emailValidation = validateEmail(formData.email);
+    if (!emailValidation.valid) {
+      newErrors.email = emailValidation.error;
+    }
+    
+    const phoneValidation = validatePhone(formData.phone);
+    if (!phoneValidation.valid) {
+      newErrors.phone = phoneValidation.error;
+    }
+    
+    const deptValidation = validateDepartment(formData.department);
+    if (!deptValidation.valid) {
+      newErrors.department = deptValidation.error;
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSave = () => {
+    if (!validateForm()) {
+      toast.error("Please fix the errors in the form");
+      return;
+    }
+    
     updateUser(currentUser.id, {
-      ...formData,
+      name: formData.name.trim(),
+      email: formData.email.trim().toLowerCase(),
+      phone: formData.phone.trim(),
+      department: formData.department.trim(),
       file: selectedFile,
     });
     setIsEditing(false);
+    setErrors({});
     toast.success("Profile updated successfully");
   };
 
@@ -92,12 +130,22 @@ export default function Settings() {
               Full Name
             </label>
             {isEditing ? (
-              <input
-                type="text"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="input-field"
-              />
+              <>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/[^a-zA-Z\s\-']/g, "");
+                    setFormData({ ...formData, name: value });
+                    if (errors.name) setErrors({ ...errors, name: null });
+                  }}
+                  className={`input-field ${errors.name ? "border-destructive" : ""}`}
+                  placeholder="Enter your name (letters only)"
+                />
+                {errors.name && (
+                  <p className="text-xs text-destructive mt-1">{errors.name}</p>
+                )}
+              </>
             ) : (
               <p className="px-4 py-2.5 rounded-lg bg-accent/50 text-foreground">{currentUser.name}</p>
             )}
@@ -109,12 +157,21 @@ export default function Settings() {
               Email
             </label>
             {isEditing ? (
-              <input
-                type="email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="input-field"
-              />
+              <>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => {
+                    setFormData({ ...formData, email: e.target.value });
+                    if (errors.email) setErrors({ ...errors, email: null });
+                  }}
+                  className={`input-field ${errors.email ? "border-destructive" : ""}`}
+                  placeholder="Enter your email"
+                />
+                {errors.email && (
+                  <p className="text-xs text-destructive mt-1">{errors.email}</p>
+                )}
+              </>
             ) : (
               <p className="px-4 py-2.5 rounded-lg bg-accent/50 text-foreground">{currentUser.email}</p>
             )}
@@ -126,12 +183,22 @@ export default function Settings() {
               Phone
             </label>
             {isEditing ? (
-              <input
-                type="tel"
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="input-field"
-              />
+              <>
+                <input
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/[^\d\s\+\-\(\)]/g, "");
+                    setFormData({ ...formData, phone: value });
+                    if (errors.phone) setErrors({ ...errors, phone: null });
+                  }}
+                  className={`input-field ${errors.phone ? "border-destructive" : ""}`}
+                  placeholder="Enter phone number (numbers only)"
+                />
+                {errors.phone && (
+                  <p className="text-xs text-destructive mt-1">{errors.phone}</p>
+                )}
+              </>
             ) : (
               <p className="px-4 py-2.5 rounded-lg bg-accent/50 text-foreground">
                 {currentUser.phone || "Not set"}
@@ -145,12 +212,22 @@ export default function Settings() {
               Department
             </label>
             {isEditing ? (
-              <input
-                type="text"
-                value={formData.department}
-                onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                className="input-field"
-              />
+              <>
+                <input
+                  type="text"
+                  value={formData.department}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/[^a-zA-Z0-9\s\-]/g, "");
+                    setFormData({ ...formData, department: value });
+                    if (errors.department) setErrors({ ...errors, department: null });
+                  }}
+                  className={`input-field ${errors.department ? "border-destructive" : ""}`}
+                  placeholder="Enter department"
+                />
+                {errors.department && (
+                  <p className="text-xs text-destructive mt-1">{errors.department}</p>
+                )}
+              </>
             ) : (
               <p className="px-4 py-2.5 rounded-lg bg-accent/50 text-foreground">
                 {currentUser.department || "Not set"}
@@ -210,6 +287,7 @@ export default function Settings() {
                     department: currentUser.department || "",
                   });
                   setSelectedFile(null);
+                  setErrors({});
                 }}
                 className="btn-secondary"
               >

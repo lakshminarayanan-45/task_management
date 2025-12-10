@@ -29,7 +29,7 @@ export default function CreateTaskModal({ isOpen, onClose }) {
     status: "todo",
     priority: "medium",
     assigneeId: "",
-    dueDate: format(addDays(new Date(), 7), "yyyy-MM-dd"),
+    dueDate: "",
   });
 
   useEffect(() => {
@@ -65,9 +65,13 @@ export default function CreateTaskModal({ isOpen, onClose }) {
       newErrors.assigneeId = assigneeValidation.error;
     }
     
-    const selectedDate = new Date(formData.dueDate);
-    if (isBefore(selectedDate, startOfDay(new Date()))) {
-      newErrors.dueDate = "Due date cannot be in the past";
+    if (!formData.dueDate) {
+      newErrors.dueDate = "Please pick a date";
+    } else {
+      const selectedDate = new Date(formData.dueDate);
+      if (isBefore(selectedDate, startOfDay(new Date()))) {
+        newErrors.dueDate = "Due date cannot be in the past";
+      }
     }
     
     setErrors(newErrors);
@@ -96,7 +100,7 @@ export default function CreateTaskModal({ isOpen, onClose }) {
       status: "todo",
       priority: "medium",
       assigneeId: "",
-      dueDate: format(addDays(new Date(), 7), "yyyy-MM-dd"),
+      dueDate: "",
     });
     setErrors({});
     onClose();
@@ -203,7 +207,9 @@ export default function CreateTaskModal({ isOpen, onClose }) {
                 onClick={() => setShowCalendar(!showCalendar)}
                 className={`input-field text-left flex items-center justify-between ${errors.dueDate ? "border-destructive" : ""}`}
               >
-                <span>{format(new Date(formData.dueDate), "MMM d, yyyy")}</span>
+                <span className={formData.dueDate ? "text-foreground" : "text-muted-foreground"}>
+                  {formData.dueDate ? format(new Date(formData.dueDate), "MMM d, yyyy") : "Pick a date"}
+                </span>
                 <Calendar className="w-4 h-4 text-muted-foreground" />
               </button>
               {errors.dueDate && (

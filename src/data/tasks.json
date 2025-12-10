@@ -1,0 +1,29 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Redesign Landing Page",
+      "description": "Update the landing page with new branding and improve conversion rates",
+      "status": "in-progress",
+      "priority": "high",
+      "assigneeId": "emp-2",
+      "createdBy": "admin-1",
+      "dueDate": "2025-12-15",
+      "createdAt": "2025-12-01",
+      "comments": []
+    },
+    {
+      "id": "task-2",
+      "title": "API Integration",
+      "description": "Integrate payment gateway API with the checkout system",
+      "status": "todo",
+      "priority": "high",
+      "assigneeId": "emp-1",
+      "createdBy": "manager-1",
+      "dueDate": "2025-12-20",
+      "createdAt": "2025-12-05",
+      "comments": []
+    }
+  ],
+  "lastTaskId": 2
+}

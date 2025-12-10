@@ -1,0 +1,37 @@
+{
+  "users": [
+    {
+      "id": "admin-1",
+      "name": "Admin User",
+      "email": "admin@taskflow.com",
+      "role": "admin",
+      "department": "Management",
+      "phone": "+1 234 567 890"
+    },
+    {
+      "id": "manager-1",
+      "name": "Sarah Johnson",
+      "email": "sarah@taskflow.com",
+      "role": "manager",
+      "department": "Engineering",
+      "phone": "+1 234 567 891"
+    },
+    {
+      "id": "emp-1",
+      "name": "John Smith",
+      "email": "john@taskflow.com",
+      "role": "employee",
+      "department": "Development",
+      "phone": "+1 234 567 892"
+    },
+    {
+      "id": "emp-2",
+      "name": "Emily Davis",
+      "email": "emily@taskflow.com",
+      "role": "employee",
+      "department": "Design",
+      "phone": "+1 234 567 893"
+    }
+  ],
+  "lastUserId": 4
+}

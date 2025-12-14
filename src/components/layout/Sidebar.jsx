@@ -4,6 +4,7 @@ import {
   LayoutDashboard,
   CheckSquare,
   Users,
+  Calendar,
   Settings,
   LogOut,
   X,
@@ -17,6 +18,7 @@ const menuItems = [
   { path: "/tasks", label: "Tasks", icon: CheckSquare },
   { path: "/kanban", label: "Kanban Board", icon: Layers },
   { path: "/team", label: "Team", icon: Users },
+  { path: "/calendar", label: "Calendar", icon: Calendar },
   { path: "/settings", label: "Settings", icon: Settings },
 ];
 

@@ -301,23 +301,6 @@ export default function Settings() {
           )}
         </div>
       </div>
-
-      <div className="bg-card border border-border rounded-xl p-6">
-        <h3 className="text-lg font-semibold text-foreground mb-4">Preferences</h3>
-        
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="font-medium text-foreground">Theme</p>
-            <p className="text-sm text-muted-foreground">Switch between light and dark mode</p>
-          </div>
-          <button
-            onClick={toggleTheme}
-            className="px-4 py-2 rounded-lg bg-accent text-foreground font-medium hover:bg-accent/80 transition-colors"
-          >
-            {theme === "light" ? "Dark Mode" : "Light Mode"}
-          </button>
-        </div>
-      </div>
     </div>
   );
 }

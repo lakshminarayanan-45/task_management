@@ -10,7 +10,6 @@ import Dashboard from "./pages/Dashboard";
 import Tasks from "./pages/Tasks";
 import Kanban from "./pages/Kanban";
 import Team from "./pages/Team";
-import Calendar from "./pages/Calendar";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -62,7 +61,6 @@ function AppRoutes() {
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/kanban" element={<Kanban />} />
         <Route path="/team" element={<Team />} />
-        <Route path="/calendar" element={<Calendar />} />
         <Route path="/settings" element={<Settings />} />
       </Route>
       <Route path="*" element={<NotFound />} />

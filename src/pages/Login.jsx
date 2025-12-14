@@ -1,15 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { CheckSquare, Eye, EyeOff, LogIn, ChevronDown, ChevronUp, Sparkles } from "lucide-react";
+import { CheckSquare, Eye, EyeOff, LogIn, Sparkles } from "lucide-react";
 import { useApp } from "../context/AppContext";
 import { toast } from "sonner";
-
-const demoCredentials = [
-  { role: "Admin", email: "admin@taskflow.com", password: "admin123" },
-  { role: "Manager", email: "sarah@taskflow.com", password: "sarah123" },
-  { role: "Employee 1", email: "john@taskflow.com", password: "john123" },
-  { role: "Employee 2", email: "emily@taskflow.com", password: "emily123" },
-];
 
 export default function Login() {
   const navigate = useNavigate();
@@ -17,7 +10,6 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [showCredentials, setShowCredentials] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -41,11 +33,6 @@ export default function Login() {
         toast.error("Invalid email or password");
       }
     }, 500);
-  };
-
-  const handleQuickLogin = (cred) => {
-    setEmail(cred.email);
-    setPassword(cred.password);
   };
 
   return (
@@ -125,45 +112,6 @@ export default function Login() {
               )}
             </button>
           </form>
-        </div>
-
-        <div className="mt-6 animate-slide-up" style={{ animationDelay: "0.5s" }}>
-          <button
-            onClick={() => setShowCredentials(!showCredentials)}
-            className="w-full flex items-center justify-between p-4 bg-card border border-border rounded-xl hover:bg-accent hover:border-primary/30 transition-all duration-300 group"
-          >
-            <span className="text-sm font-medium text-foreground flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-primary animate-pulse-subtle" />
-              Demo Credentials
-            </span>
-            <div className={`transition-transform duration-300 ${showCredentials ? "rotate-180" : ""}`}>
-              <ChevronDown className="w-4 h-4 text-muted-foreground group-hover:text-primary" />
-            </div>
-          </button>
-
-          <div className={`mt-2 bg-card border border-border rounded-xl overflow-hidden transition-all duration-300 ${
-            showCredentials ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-          }`}>
-            {demoCredentials.map((cred, index) => (
-              <button
-                key={index}
-                onClick={() => handleQuickLogin(cred)}
-                className="w-full p-4 text-left hover:bg-accent transition-all duration-200 border-b border-border last:border-0 group"
-                style={{ animationDelay: `${index * 50}ms` }}
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{cred.role}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">{cred.email}</p>
-                  </div>
-                  <span className="text-xs text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center gap-1">
-                    <Sparkles className="w-3 h-3" />
-                    Click to use
-                  </span>
-                </div>
-              </button>
-            ))}
-          </div>
         </div>
       </div>
     </div>
